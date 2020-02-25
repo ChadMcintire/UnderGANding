@@ -65,5 +65,5 @@ for i, idx in enumerate(indices):
     ax.text(0.5, -0.7, 'act = ' + str(img_idx_key), fontsize=10 , ha='center', transform=ax.transAxes)
     ax.imshow(img)
 
-#plt.show()
+plt.show()
 
