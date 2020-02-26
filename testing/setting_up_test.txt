@@ -1,0 +1,9 @@
+
+#using setup and teardown
+https://stackoverflow.com/questions/6854658/explain-the-setup-and-teardown-python-methods-used-in-test-cases
+
+# setting up and init in an existing class with inheritance
+https://stackoverflow.com/questions/17353213/init-for-unittest-testcase/17353262
+
+#getting started with testing 
+https://realpython.com/python-testing/
