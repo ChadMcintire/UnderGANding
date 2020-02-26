@@ -1,0 +1,4 @@
+exploding gradient problem
+covariate shift
+batch normalization
+dropout
