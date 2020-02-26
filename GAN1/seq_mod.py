@@ -33,7 +33,7 @@ model.compile(loss='categorical_crossentropy', optimizer=opt,
 
 model.fit(x_train
           , y_train
-          , batch_size = 32
+          , batch_size = 200
           , epochs =10
           , shuffle = True
           )

@@ -56,4 +56,4 @@ model.evaluate(x_test, y_test)
 model.save('model1.h5')
 del model
 
-new_model = keras.models.load_model('path_to_my_model.h5')
+new_model = keras.models.load_model('model1.h5')
