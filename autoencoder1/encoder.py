@@ -11,8 +11,8 @@ class Encoder():
                  encoder_conv_kernel_size,
                  encoder_conv_strides,
                  z_dim, 
-                 use_batch_norm,
-                 use_dropout
+                 use_batch_norm=False,
+                 use_dropout=False,
                  ):
         self.input_dim = input_dim    
         self.name = 'decoder'
@@ -50,6 +50,5 @@ class Encoder():
 
         self.shape_before_flattening = K.int_shape(x)[1:]
         x = Flatten()(x)
-        encoder_output= Dense(self.z_dim, name='encoder_output')(x)
-
+        encoder_output = Dense(self.z_dim, name='encoder_output')(x)
         self.encoder = Model(encoder_input, encoder_output)
