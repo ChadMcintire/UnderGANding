@@ -15,7 +15,7 @@ class Encoder():
                  use_dropout=False,
                  ):
         self.input_dim = input_dim    
-        self.name = 'decoder'
+        self.name = 'encoder'
         self.num_layers = len(encoder_conv_filters)
         self.encoder_conv_filters = encoder_conv_filters
         self.encoder_conv_kernel_size = encoder_conv_kernel_size
@@ -27,6 +27,7 @@ class Encoder():
 
     def layer_setup(self):
         encoder_input = Input(shape=self.input_dim, name='encoder_input')
+        self.encoder_input = encoder_input
         x = encoder_input
 
         for i in range(self.num_layers):
@@ -50,5 +51,5 @@ class Encoder():
 
         self.shape_before_flattening = K.int_shape(x)[1:]
         x = Flatten()(x)
-        encoder_output = Dense(self.z_dim, name='encoder_output')(x)
-        self.encoder = Model(encoder_input, encoder_output)
+        self.encoder_output = Dense(self.z_dim, name='encoder_output')(x)
+        self.encoder = Model(encoder_input, self.encoder_output)
