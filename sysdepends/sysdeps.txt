@@ -1,2 +1,7 @@
 # if you use matlab you need to install this
 sudo apt-get install python3-tk 
+
+#run this in the lowest python directory
+export PYTHONPATH=$(pwd)
+
+#remember to put a __init__.py in the folder below
