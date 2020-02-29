@@ -1,0 +1,5 @@
+make virtualenvwrapper work
+install Pipenv
+get in the habit of using lint and pycodestyle and autopep8 everytime you edit
+# example 
+autopep8 --in-place decoder.py

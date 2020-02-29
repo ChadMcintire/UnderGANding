@@ -1,0 +1,19 @@
+
+
+The activation function is critical to ensure the neural network is able to learn complex functions and doesn’t just output a linear combination of its input.
+
+The ReLU (rectified linear unit) activation function is defined to be zero if the input is negative and is otherwise equal to the input.
+
+ReLU units can sometimes die if they always output zero, because of a large bias toward negative values preactivation. 
+
+LeakyReLU activations fix the issue by always ensuring the gradient is nonzero. ReLU-based functions are now established to be the most reliable activations to use between the layers of a deep network to encourage stable training.
+
+The summary method also gives the number of parameters (weights) that will be trained at each layer. If ever you find that your model is training too slowly, check the summary to see if there are any layers that contain a huge number of weights. If so, you should consider whether the number of units in the layer could be reduced to speed up training.
+
+If your neural network is designed to solve a regression problem (i.e., the output is continuous), then you can use the mean squared error loss. This is the mean of the squared difference between the ground truth yi and predicted value pi of each output unit, where the mean is taken over all n output units:
+
+If you are working on a classification problem where each observation only belongs to one class, then categorical cross-entropy is the correct loss function.
+
+Finally, if you are working on a binary classification problem with one output unit, or a multilabel problem where each observation can belong to multiple classes simultaneously, you should use binary cross-entropy:
+
+It would be far too time-consuming and computationally intensive to use the entire dataset to calculate the gradient at each training step, so generally a batch size between 32 and 256 is used. It is also now recommended practice to increase the batch size as training progresses.

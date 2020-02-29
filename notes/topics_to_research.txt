@@ -1,0 +1,6 @@
+exploding gradient problem
+covariate shift
+batch normalization
+dropout
+Binary cross-entropy
+root mean squared Error
