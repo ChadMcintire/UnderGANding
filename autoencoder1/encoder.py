@@ -53,3 +53,6 @@ class Encoder():
         x = Flatten()(x)
         self.encoder_output = Dense(self.z_dim, name='encoder_output')(x)
         self.encoder = Model(encoder_input, self.encoder_output)
+
+        print("Encoder Summary")
+        self.encoder.summary()

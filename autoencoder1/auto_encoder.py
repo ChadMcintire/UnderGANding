@@ -1,6 +1,9 @@
 from encoder import Encoder
 from decoder import Decoder
 from keras.models import Model
+from keras.optimizers import Adam
+from keras import backend as K
+from keras.datasets import mnist
 
 
 class Autoencoder():
@@ -53,6 +56,27 @@ class Autoencoder():
 
         self.model = Model(model_input, model_output)
 
+        print("\nAutoencoder Summary\n")
+        self.model.summary()
+
+    def compile(self, learning_rate):
+        optimizer = Adam(lr=learning_rate)
+        
+        def r_loss(y_true, y_pred):
+            return K.mean(K.square(y_true - y_pred), axis = [1,2,3])
+
+        self.model.compile(optimizer=optimizer, loss = r_loss)
+
+    def train(self,x_train, batch_size, epochs, initial_epoch ):
+            self.model.fit(     
+            x_train,
+            x_train,
+            batch_size = batch_size,
+            shuffle = True,
+            epochs = epochs,
+            initial_epoch = initial_epoch,
+        )
+
  
 if __name__ == '__main__':
     input_dim = (28,28,1)
@@ -63,6 +87,20 @@ if __name__ == '__main__':
     decoder_conv_t_kernel_size = [3,3,3,3]
     decoder_conv_t_strides = [1,2,2,1]
     z_dim = 2
+    lr = 0.0005
+
+    LEARNING_RATE = 0.0005
+    BATCH_SIZE = 32
+    INITIAL_EPOCH = 0
+
+
+
+    (x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+    x_train = x_train.astype('float32') / 255.
+    x_train = x_train.reshape(x_train.shape + (1,))
+    x_test = x_test.astype('float32') / 255.
+    x_test = x_test.reshape(x_test.shape + (1,))
 
     AE = Autoencoder(input_dim,
             encoder_conv_filters,
@@ -73,3 +111,18 @@ if __name__ == '__main__':
             decoder_conv_t_strides, 
             z_dim,
             )
+
+    AE.compile(lr)
+
+
+    
+    AE.train(     
+    x_train[:1000],
+    batch_size = BATCH_SIZE,
+    epochs = 200,
+    initial_epoch = INITIAL_EPOCH,
+    ) 
+
+    print('\n# Evaluate on test data')
+    results = AE.evaluate(x_test, y_test, batch_size=128)
+    print('test loss, test acc:', results)

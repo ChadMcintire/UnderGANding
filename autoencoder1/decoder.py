@@ -54,3 +54,6 @@ class Decoder():
         decoder_output = x
         self.decoder = Model(decoder_input, decoder_output)
         
+        print("\nDecoder Summary\n")
+        self.decoder.summary()
+        
