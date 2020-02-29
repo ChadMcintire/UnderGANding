@@ -1,7 +1,9 @@
-from keras.layers import Input, Conv2D, LeakyReLU, Flatten, Dense, Reshape, Conv2DTranspose, Activation
+from keras.layers import Input, Conv2D, LeakyReLU, Flatten, Dense, Reshape,\
+                         Conv2DTranspose, Activation
 from keras.models import Model
 from keras import backend as K
 import numpy as np
+
 
 class Decoder():
     def __init__(self,
@@ -31,12 +33,11 @@ class Decoder():
 
         for i in range(self.num_layers):
             conv_t_layer = Conv2DTranspose(
-                filters = self.decoder_conv_filters[i]
-                , kernel_size = self.decoder_conv_kernel_size[i]
-                , strides = self.decoder_conv_strides[i]
-                , padding = 'same'
-                , name = 'decoder_conv_' + str(i)
-                )
+                filters=self.decoder_conv_filters[i],
+                kernel_size=self.decoder_conv_kernel_size[i],
+                strides=self.decoder_conv_strides[i], padding='same',
+                name='decoder_conv_' + str(i),
+            )
 
             x = conv_t_layer(x)
 
@@ -47,13 +48,12 @@ class Decoder():
                     x = BatchNormalization()(x)
 
                 if self.use_dropout:
-                    x = Dropout(rate = 0.25)(x)
+                    x = Dropout(rate=0.25)(x)
             else:
                 x = Activation('sigmoid')(x)
 
         decoder_output = x
         self.decoder = Model(decoder_input, decoder_output)
-        
+
         print("\nDecoder Summary\n")
         self.decoder.summary()
-        

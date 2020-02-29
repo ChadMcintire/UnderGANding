@@ -3,18 +3,18 @@ from keras.models import Model
 from keras import backend as K
 
 
-#function api for an encoder
+# function api for an encoder
 class Encoder():
     def __init__(self,
                  input_dim,
                  encoder_conv_filters,
                  encoder_conv_kernel_size,
                  encoder_conv_strides,
-                 z_dim, 
+                 z_dim,
                  use_batch_norm=False,
                  use_dropout=False,
                  ):
-        self.input_dim = input_dim    
+        self.input_dim = input_dim
         self.name = 'encoder'
         self.num_layers = len(encoder_conv_filters)
         self.encoder_conv_filters = encoder_conv_filters
@@ -32,22 +32,22 @@ class Encoder():
 
         for i in range(self.num_layers):
             conv_layer = Conv2D(
-                filters = self.encoder_conv_filters[i]
-                , kernel_size = self.encoder_conv_kernel_size[i]
-                , strides = self.encoder_conv_strides[i]
-                , padding = 'same'
-                , name = 'encoder_conv_' + str(i)
-                )
+                filters=self.encoder_conv_filters[i],
+                kernel_size=self.encoder_conv_kernel_size[i],
+                kstrides=self.encoder_conv_strides[i],
+                padding='same',
+                name='encoder_conv_' + str(i)
+            )
 
             x = conv_layer(x)
-    
+
             x = LeakyReLU()(x)
-    
+
             if self.use_batch_norm:
                 x = BatchNormalization()(x)
-    
+
             if self.use_dropout:
-                x = Dropout(rate = 0.25)(x)
+                x = Dropout(rate=0.25)(x)
 
         self.shape_before_flattening = K.int_shape(x)[1:]
         x = Flatten()(x)
