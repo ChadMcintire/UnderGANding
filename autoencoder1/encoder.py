@@ -1,6 +1,7 @@
-from keras.layers import Input, Conv2D, LeakyReLU, Flatten, Dense
+from keras.layers import Input, Conv2D, LeakyReLU, Flatten, Dense, Lambda
 from keras.models import Model
 from keras import backend as K
+from keras import utils
 
 
 # function api for an encoder
@@ -13,6 +14,7 @@ class Encoder():
                  z_dim,
                  use_batch_norm=False,
                  use_dropout=False,
+                 variation=True,
                  ):
         self.input_dim = input_dim
         self.name = 'encoder'
@@ -23,6 +25,7 @@ class Encoder():
         self.z_dim = z_dim
         self.use_batch_norm = use_batch_norm
         self.use_dropout = use_dropout
+        self.variation = variation
         self.layer_setup()
 
     def layer_setup(self):
@@ -34,9 +37,9 @@ class Encoder():
             conv_layer = Conv2D(
                 filters=self.encoder_conv_filters[i],
                 kernel_size=self.encoder_conv_kernel_size[i],
-                kstrides=self.encoder_conv_strides[i],
+                strides=self.encoder_conv_strides[i],
                 padding='same',
-                name='encoder_conv_' + str(i)
+                name='encoder_conv_' + str(i),
             )
 
             x = conv_layer(x)
@@ -51,8 +54,28 @@ class Encoder():
 
         self.shape_before_flattening = K.int_shape(x)[1:]
         x = Flatten()(x)
-        self.encoder_output = Dense(self.z_dim, name='encoder_output')(x)
-        self.encoder = Model(encoder_input, self.encoder_output)
 
+        if self.variation:
+            self.mu = Dense(self.z_dim, name='mu')(x)
+            self.log_var = Dense(self.z_dim, name='log_var')(x)
+
+            encoder_mu_log_var = Model(encoder_input, (self.mu, self.log_var))
+
+            def sampling(args):
+                mu, log_var = args
+                epsilon = K.random_normal(
+                    shape=K.shape(mu), mean=0., stddev=1.)
+                sigma = K.exp(log_var/2)
+                return mu + sigma * epsilon
+            self.encoder_output = Lambda(sampling, name='encoder_output')([
+                self.mu, self.log_var])
+
+        else:
+            self.encoder_output = Dense(self.z_dim, name='encoder_output')(x)
+
+        self.encoder = Model(encoder_input, self.encoder_output)
         print("Encoder Summary")
         self.encoder.summary()
+
+        utils.plot_model(self.encoder, 'encoder_model.png',
+                         show_layer_names=True, show_shapes=True, rankdir='TB')

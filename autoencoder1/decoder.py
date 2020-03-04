@@ -55,5 +55,11 @@ class Decoder():
         decoder_output = x
         self.decoder = Model(decoder_input, decoder_output)
 
-        print("\nDecoder Summary\n")
+        z_new = np.random.normal(size = (1,self.z_dim))
+        #print("prediction", self.decoder.predict(np.array(z_new))[0].squeeze())
+
+        #print("\nDecoder Summary\n")
+
         self.decoder.summary()
+
+        #print("Decoder Model", self.decoder)
