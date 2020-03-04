@@ -153,6 +153,13 @@ if __name__ == '__main__':
     RUN_FOLDER = 'run/{}/'.format(SECTION)
     RUN_FOLDER += '_'.join([RUN_ID, DATA_NAME])
 
+    if not os.path.exists("run"):
+        os.mkdir('run')
+
+    if not os.path.exists(os.path.join('run','vae')):
+        os.mkdir(os.path.join('run','vae'))
+
+
     if not os.path.exists(RUN_FOLDER):
         os.mkdir(RUN_FOLDER)
         os.mkdir(os.path.join(RUN_FOLDER, 'viz'))
