@@ -7,7 +7,8 @@ from keras.datasets import mnist
 import os
 from callbacks import CustomCallback, step_decay_schedule
 from keras.callbacks import ModelCheckpoint
-
+import pickle
+from keras.utils import plot_model
 
 
 class Autoencoder():
@@ -55,6 +56,7 @@ class Autoencoder():
             encode.shape_before_flattening,
         )
         self.decoder = decoder.__dict__['decoder']
+        self.encoder = encode.__dict__['encoder']
         model_input = encode.encoder_input
         model_output = decoder.decoder(encode.encoder_output)
 
@@ -117,7 +119,7 @@ class Autoencoder():
         with open(os.path.join(folder, 'params.pkl'), 'wb') as f:
             pickle.dump([
                 self.input_dim,
-                self.encoder_covn_filters,
+                self.encoder_conv_filters,
                 self.encoder_conv_kernel_size,
                 self.encoder_conv_strides,
                 self.decoder_conv_filters,
@@ -128,7 +130,7 @@ class Autoencoder():
                 self.use_dropout,
                 ], f)
 
-        self.plot_model_(folder)
+        self.plot_model(folder)
 
 
 

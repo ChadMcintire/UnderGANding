@@ -66,3 +66,4 @@ if __name__ == '__main__':
         , initial_epoch = INITIAL_EPOCH
     )
 
+    AE.save(RUN_FOLDER)

@@ -1,6 +1,7 @@
 from auto_encoder import Autoencoder
 import os
 from keras.datasets import mnist
+import pickle
 
  
 if __name__ == '__main__':
@@ -11,7 +12,7 @@ if __name__ == '__main__':
     RUN_FOLDER += '_'.join([RUN_ID, DATA_NAME])
 
     def load_model(model_class, folder):
-    
+
         with open(os.path.join(folder, 'params.pkl'), 'rb') as f:
             params = pickle.load(f)
 
